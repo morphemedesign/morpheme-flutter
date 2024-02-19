@@ -1,0 +1,110 @@
+# json2dart for configuration generate
+#
+# node 1 is feature name
+# node 2 is page name
+# node 3 is api name can be multiple api in 1 page
+#
+# method allow: get, post, put, patch, delete & multipart.
+# cache_strategy allow: async_or_cache, cache_or_async, just_async, just_cache. by default set to just_async.
+# base_url: base_url for remote api take from String.environment('${base_url}').
+#
+# example
+# json2dart:
+#   body_format_date_time: yyyy-MM-dd
+#   response_format_date_time: yyyy-MM-dd HH:mm
+#   api: true
+#   endpoint: true
+#   unit-test: false
+#   replace: false
+
+#   environment_url:
+#     - &base_url BASE_URL
+
+#   remote:
+#     .login: &login
+#       base_url: *base_url
+#       path: /login
+#       method: post
+#       # header: json2dart/json/header/login_header.json
+#       body: json2dart/json/body/login_body.json
+#       response: json2dart/json/response/login_response.json
+#       cache_strategy: async_or_cache
+#     .register: &register
+#       base_url: *base_url
+#       path: /register
+#       method: post
+#       # header: json2dart/json/header/register_header.json
+#       body: json2dart/json/body/register_body.json
+#       response: json2dart/json/response/register_response.json
+#       cache_strategy:
+#         strategy: cache_or_async
+#         ttl: 60
+#     .forgot_password: &forgot_password
+#       base_url: *base_url
+#       path: /forgot_password
+#       method: get
+#       # header: json2dart/json/header/forgot_password_header.json
+#       body: json2dart/json/body/forgot_password_body.json
+#       response: json2dart/json/response/forgot_password_response.json
+#       cache_strategy:
+#         strategy: just_cache
+#         ttl: 120
+#         keep_expired_cache: true
+#
+# auth:
+#   login:
+#     login: *login
+#   register:
+#     register: *register
+#   forgot_password:
+#     forgot_password: *forgot_password
+
+json2dart:
+  body_format_date_time: yyyy-MM-dd
+  response_format_date_time: yyyy-MM-dd HH:mm
+  api: true
+  endpoint: true
+  unit-test: false
+  replace: false
+
+  environment_url:
+    - &base_url BASE_URL
+
+  remote:
+    .login: &login
+      base_url: *base_url
+      path: /login
+      method: post
+      # header: json2dart/json/header/login_header.json
+      body: json2dart/json/body/login_body.json
+      response: json2dart/json/response/login_response.json
+      cache_strategy: async_or_cache
+    .register: &register
+      base_url: *base_url
+      path: /register
+      method: post
+      # header: json2dart/json/header/register_header.json
+      body: json2dart/json/body/register_body.json
+      response: json2dart/json/response/register_response.json
+      cache_strategy:
+        strategy: cache_or_async
+        ttl: 60
+    .forgot_password: &forgot_password
+      base_url: *base_url
+      path: /forgot_password
+      method: get
+      # header: json2dart/json/header/forgot_password_header.json
+      body: json2dart/json/body/forgot_password_body.json
+      response: json2dart/json/response/forgot_password_response.json
+      cache_strategy:
+        strategy: just_cache
+        ttl: 120
+        keep_expired_cache: true
+
+auth:
+  login:
+    login: *login
+  register:
+    register: *register
+  forgot_password:
+    forgot_password: *forgot_password

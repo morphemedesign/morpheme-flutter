@@ -1,0 +1,291 @@
+variables:
+  # GIT
+  GIT_DEPTH: 0
+  LC_ALL: "en_US.UTF-8"
+  LANG: "en_US.UTF-8"
+  # ANDROID
+  PATH_KEY_PROPERTIES: "android/key.properties"
+  PATH_KEY_STORE: "android/app/morpheme.jks"
+  PATH_PLAY_STORE_JSON: "android/fastlane/play-store.json"
+  # IOS
+  PATH_EXPORT_OPTIONS_PLISTS: "ios/ExportOptions.plist"
+  PATH_APP_STORE_JSON: "ios/fastlane/AppStore.json"
+  # NOTIFICATION TO SLACK
+  APP_NAME: "Morpheme"
+  CHANNEL_SLACK: "#flutter-deployment"
+  MENTION_SLACK: "<!channel>"
+  # FLUTTER SDK
+  FLUTTER_VERSION: "flutter-3.16"
+
+stages:
+  - analyze
+  - test
+  - build_android
+  - deploy_android
+  - build_ios
+  - deploy_ios
+
+default:
+  before_script:
+    # Setup Flutter
+    - export PATH="$PATH:$HOME/Documents/Deployment/Flutter/$FLUTTER_VERSION/flutter/bin"
+    # Setup morpheme.yaml
+    - echo "$MORPHEME_YAML" > "./morpheme.yaml"
+    # Clean then get dependency project
+    - morpheme clean
+    - morpheme get
+  tags:
+    - mac-mini-m1
+
+analyze:
+  stage: analyze
+  allow_failure: false
+  script:
+    - morpheme analyze
+  only:
+    - merge_requests
+    - $CI_DEFAULT_BRANCH
+
+coverage:
+  stage: test
+  allow_failure: false
+  script:
+    - morpheme coverage
+  coverage: '/lines\.*: \d+\.\d+\%/'
+  rules:
+    - if: $CI_COMMIT_TAG =~ /^coverage.*/
+  artifacts:
+    paths:
+      - coverage
+
+.build-apk:
+  stage: build_android
+  resource_group: build_and_deploy_android
+  allow_failure: false
+  script:
+    # Get version name & build number from tag
+    - IFS='-' # Read the split words into an array based on dash delimiter.
+    - read -a strarr <<< "$CI_COMMIT_TAG"
+    - VERSION_NAME=${strarr[1]}
+    - BUILD_NUMBER=${strarr[2]}
+    # Setup key store android
+    - echo "$ANDROID_KEY_PROPERTIES" > "$PATH_KEY_PROPERTIES"
+    - echo "$ANDROID_KEY_STORE" | base64 -d > "$PATH_KEY_STORE"
+    # Build apk android
+    - morpheme build apk -f ${CI_ENVIRONMENT_NAME} --build-number=$BUILD_NUMBER --build-name=$VERSION_NAME
+  # artifacts:
+  #   paths:
+  #   - build/app/outputs/flutter-apk/app-release.apk
+  #   expire_in: 1 day
+
+build-apk:dev:
+  extends: .build-apk
+  environment: dev
+  rules:
+    - if: $CI_COMMIT_TAG =~ /^dev-(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)-(0|[1-9]\d*)$/ || $CI_COMMIT_TAG =~ /^and_dev-(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)-(0|[1-9]\d*)$/
+
+build-apk:stag:
+  extends: .build-apk
+  environment: stag
+  rules:
+    - if: $CI_COMMIT_TAG =~ /^stag-(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)-(0|[1-9]\d*)$/ || $CI_COMMIT_TAG =~ /^and_stag-(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)-(0|[1-9]\d*)$/
+
+.deploy-to-firebase-distribution:
+  stage: deploy_android
+  resource_group: build_and_deploy_android
+  allow_failure: false
+  variables:
+    GIT_STRATEGY: none
+    GIT_CHECKOUT: "false"
+  before_script:
+    - export PATH="$PATH:$HOME/Documents/Deployment/Flutter/$FLUTTER_VERSION/flutter/bin"
+  script:
+    # Setup release note firebase take from CHANGELOG.md
+    - CHANGELOG=$(morpheme changelog)
+    # Change working directory to android
+    - cd android
+    # Deploy apk to firebase distribution
+    - fastlane deploy_to_firebase_distribution firebase_app_id:"$FIREBASE_APP_ID_ANDROID" token:"$FIREBASE_TOKEN" release_notes:"$CHANGELOG" android_artifact_path:"../build/app/outputs/flutter-apk/app-release.apk" groups:"$FIREBASE_TESTER_GROUP"
+    # Notification to Slack
+    - fastlane notification_to_slack_firebase_distribution app_name:"$APP_NAME" upload_to:"Firebase Distribution - $CI_ENVIRONMENT_NAME" channel:"$CHANNEL_SLACK" webhook_slack:"$WEBHOOK_SLACK" version:"$VERSION_NAME" build:"$BUILD_NUMBER" firebase_app_id:"$FIREBASE_APP_ID_ANDROID" firebase_app_distribution_url:"$FIREBASE_APP_DISTRIBUTION_URL" token:"$FIREBASE_TOKEN" mention_slack:"$MENTION_SLACK"
+    # Change working directory to root
+    - cd ..
+    # Remove file credentials
+    - rm -f "$PATH_KEY_PROPERTIES"
+    - rm -f "$PATH_KEY_STORE"
+
+deploy-to-firebase-distribution:dev:
+  extends: .deploy-to-firebase-distribution
+  environment: dev
+  needs:
+    - build-apk:dev
+  rules:
+    - if: $CI_COMMIT_TAG =~ /^dev-(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)-(0|[1-9]\d*)$/ || $CI_COMMIT_TAG =~ /^and_dev-(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)-(0|[1-9]\d*)$/
+
+deploy-to-firebase-distribution:stag:
+  extends: .deploy-to-firebase-distribution
+  environment: stag
+  needs:
+    - build-apk:stag
+  rules:
+    - if: $CI_COMMIT_TAG =~ /^stag-(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)-(0|[1-9]\d*)$/ || $CI_COMMIT_TAG =~ /^and_stag-(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)-(0|[1-9]\d*)$/
+
+build-aab:
+  stage: build_android
+  resource_group: build_and_deploy_android
+  environment: prod
+  allow_failure: false
+  script:
+    # Get version name & build number from tag
+    - IFS='-' # Read the split words into an array based on dash delimiter.
+    - read -a strarr <<< "$CI_COMMIT_TAG"
+    - VERSION_NAME=${strarr[1]}
+    - BUILD_NUMBER=${strarr[2]}
+    # Setup key store android
+    - echo "$ANDROID_KEY_PROPERTIES" > "$PATH_KEY_PROPERTIES"
+    - echo "$ANDROID_KEY_STORE" | base64 -d > "$PATH_KEY_STORE"
+    # Setup key play store
+    - echo "$PLAY_STORE_JSON" > "$PATH_PLAY_STORE_JSON"
+    # Build aab android
+    - morpheme build appbundle -f ${CI_ENVIRONMENT_NAME} --build-number=$BUILD_NUMBER --build-name=$VERSION_NAME
+  rules:
+    - if: $CI_COMMIT_TAG =~ /^prod-(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)-(0|[1-9]\d*)$/ || $CI_COMMIT_TAG =~ /^and_prod-(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)-(0|[1-9]\d*)$/
+  # artifacts:
+  #   paths:
+  #   - build/app/outputs/bundle/release/app-release.aab
+  #   expire_in: 1 day
+
+deploy-to-play-store:
+  stage: deploy_android
+  resource_group: build_and_deploy_android
+  environment: prod
+  allow_failure: false
+  variables:
+    GIT_STRATEGY: none
+    GIT_CHECKOUT: "false"
+  before_script:
+    - export PATH="$PATH:$HOME/Documents/Deployment/Flutter/$FLUTTER_VERSION/flutter/bin"
+  script:
+    # Get version name & build number from tag
+    - IFS='-' # Read the split words into an array based on dash delimiter.
+    - read -a strarr <<< "$CI_COMMIT_TAG"
+    - VERSION_NAME=${strarr[1]}
+    - BUILD_NUMBER=${strarr[2]}
+    # Setup release note take from CHANGELOG.md
+    - CHANGELOG=$(morpheme changelog)
+    # Change working directory to android
+    - cd android
+    # Deploy to track internal test play store
+    - fastlane deploy_to_play_store internal:true aab:../build/app/outputs/bundle/release/app-release.aab
+    # Notification to Slack
+    - fastlane notification_to_slack_play_store app_name:"$APP_NAME" upload_to:"Play Store - $CI_ENVIRONMENT_NAME" channel:"$CHANNEL_SLACK" webhook_slack:"$WEBHOOK_SLACK" version:"$VERSION_NAME" build:"$BUILD_NUMBER" release_notes:"$CHANGELOG" play_store_link:"$PLAY_STORE_LINK" mention_slack:"$MENTION_SLACK"
+    # Change working directory to root
+    - cd ..
+    # Remove file credentials
+    - rm -f "$PATH_KEY_PROPERTIES"
+    - rm -f "$PATH_KEY_STORE"
+    - rm -f "$PATH_PLAY_STORE_JSON"
+  needs:
+    - build-aab
+  rules:
+    - if: $CI_COMMIT_TAG =~ /^prod-(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)-(0|[1-9]\d*)$/ || $CI_COMMIT_TAG =~ /^and_prod-(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)-(0|[1-9]\d*)$/
+
+.build-ios:
+  stage: build_ios
+  resource_group: build_and_deploy_ios
+  allow_failure: false
+  script:
+    # Get version name & build number from tag
+    - IFS='-' # Read the split words into an array based on dash delimiter.
+    - read -a strarr <<< "$CI_COMMIT_TAG"
+    - VERSION_NAME=${strarr[1]}
+    - BUILD_NUMBER=${strarr[2]}
+    # Setup key ios
+    - morpheme prebuild ios -f ${CI_ENVIRONMENT_NAME}
+    - echo "$APP_STORE_JSON" > "$PATH_APP_STORE_JSON"
+    # Change working directory to ios
+    - cd ios
+    # Set up code signing settings on Xcode project.
+    - chmod +x deployment/provisioning.sh
+    - ./deployment/provisioning.sh
+    - pod install --repo-update
+    # Change working directory to root
+    - cd ..
+    # Build ipa
+    - morpheme build ipa -f ${CI_ENVIRONMENT_NAME} --build-number=$BUILD_NUMBER --build-name=$VERSION_NAME --export-options-plist="$PATH_EXPORT_OPTIONS_PLISTS"
+  # artifacts: # If you want to generate artifacts, uncomment this script.
+  #   paths:
+  #   - $PATH_IPA
+
+build-ios:dev:
+  extends: .build-ios
+  environment: dev
+  rules:
+    - if: $CI_COMMIT_TAG =~ /^dev-(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)-(0|[1-9]\d*)$/ || $CI_COMMIT_TAG =~ /^ios_dev-(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)-(0|[1-9]\d*)$/
+
+build-ios:stag:
+  extends: .build-ios
+  environment: stag
+  rules:
+    - if: $CI_COMMIT_TAG =~ /^stag-(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)-(0|[1-9]\d*)$/ || $CI_COMMIT_TAG =~ /^ios_stag-(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)-(0|[1-9]\d*)$/
+
+build-ios:prod:
+  extends: .build-ios
+  environment: prod
+  rules:
+    - if: $CI_COMMIT_TAG =~ /^prod-(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)-(0|[1-9]\d*)$/ || $CI_COMMIT_TAG =~ /^ios_prod-(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)-(0|[1-9]\d*)$/
+
+.deploy-to-app-store:
+  stage: deploy_ios
+  resource_group: build_and_deploy_ios
+  allow_failure: false
+  variables:
+    GIT_STRATEGY: none
+    GIT_CHECKOUT: "false"
+  before_script:
+    - export PATH="$PATH:$HOME/Documents/Deployment/Flutter/$FLUTTER_VERSION/flutter/bin"
+  script:
+    # Get version name & build number from tag
+    - IFS='-' # Read the split words into an array based on dash delimiter.
+    - read -a strarr <<< "$CI_COMMIT_TAG"
+    - VERSION_NAME=${strarr[1]}
+    - BUILD_NUMBER=${strarr[2]}
+    # Setup release note take from CHANGELOG.md
+    - CHANGELOG=$(morpheme changelog)
+    # Change working directory to ios
+    - cd ios
+    # Deploy ipa to app store
+    - PATH_IPA=$( find "../build/ios/ipa" -name "*.ipa" )
+    - API_KEY_PATH=$( echo $PATH_APP_STORE_JSON | sed 's/^ios\///')
+    - fastlane deploy_ios ipa:"$PATH_IPA" api_key_path:"$API_KEY_PATH"
+    # Notification to Slack
+    - fastlane notification_to_slack app_name:"$APP_NAME" upload_to:"Testflight - $CI_ENVIRONMENT_NAME" channel:"$CHANNEL_SLACK" webhook_slack:"$WEBHOOK_SLACK" version:"$VERSION_NAME" build:"$BUILD_NUMBER" release_notes:"$CHANGELOG" mention_slack:"$MENTION_SLACK"
+    # Change working directory to root
+    - cd ..
+    # Remove file credentials
+    - rm -f "$PATH_EXPORT_OPTIONS_PLISTS"
+    - rm -f "$PATH_APP_STORE_JSON"
+
+deploy-to-app-store:dev:
+  extends: .deploy-to-app-store
+  environment: dev
+  needs:
+    - build-ios:dev
+  rules:
+    - if: $CI_COMMIT_TAG =~ /^dev-(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)-(0|[1-9]\d*)$/ || $CI_COMMIT_TAG =~ /^ios_dev-(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)-(0|[1-9]\d*)$/
+
+deploy-to-app-store:stag:
+  extends: .deploy-to-app-store
+  environment: stag
+  needs:
+    - build-ios:stag
+  rules:
+    - if: $CI_COMMIT_TAG =~ /^stag-(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)-(0|[1-9]\d*)$/ || $CI_COMMIT_TAG =~ /^ios_stag-(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)-(0|[1-9]\d*)$/
+
+deploy-to-app-store:prod:
+  extends: .deploy-to-app-store
+  environment: prod
+  needs:
+    - build-ios:prod
+  rules:
+    - if: $CI_COMMIT_TAG =~ /^prod-(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)-(0|[1-9]\d*)$/ || $CI_COMMIT_TAG =~ /^ios_prod-(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)-(0|[1-9]\d*)$/

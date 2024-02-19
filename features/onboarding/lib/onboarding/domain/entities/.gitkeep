@@ -1,0 +1,11 @@
+import 'package:core/core.dart';
+
+class OnboardingEntity extends Equatable {
+  const OnboardingEntity({
+    required this.token,
+  });
+  final String token;
+
+  @override
+  List<Object?> get props => [token];
+}

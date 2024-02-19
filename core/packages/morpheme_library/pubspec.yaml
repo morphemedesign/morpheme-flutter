@@ -1,0 +1,26 @@
+name: morpheme_library
+description: A new Flutter package project.
+version: 0.0.1
+
+publish_to: "none"
+
+environment:
+  sdk: ">=3.0.0 <4.0.0"
+  flutter: ">=3.10.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  morpheme_base: ^1.0.1
+  morpheme_http: ^1.0.1
+  morpheme_extension: ^1.0.1
+  morpheme_cached_network_image: ^1.0.1
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^3.0.1
+
+flutter:
+  uses-material-design: true

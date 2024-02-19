@@ -1,0 +1,20 @@
+{
+  "dev": {
+    "email_identity": "ios@morpheme.design",
+    "itc_team_id": "96184904",
+    "team_id": "P53KJ6MXZH",
+    "provisioning_profiles": "Morpheme"
+  },
+  "stag": {
+    "email_identity": "ios@morpheme.design",
+    "itc_team_id": "96184904",
+    "team_id": "P53KJ6MXZH",
+    "provisioning_profiles": "Morpheme"
+  },
+  "prod": {
+    "email_identity": "ios@morpheme.design",
+    "itc_team_id": "96184904",
+    "team_id": "P53KJ6MXZH",
+    "provisioning_profiles": "Morpheme"
+  }
+}

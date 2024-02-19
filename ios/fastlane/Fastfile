@@ -1,0 +1,57 @@
+# Uncomment the line if you want fastlane to automatically update itself
+# update_fastlane
+
+default_platform(:ios)
+
+ENV['ITMSTRANSPORTER_FORCE_ITMS_PACKAGE_UPLOAD'] = 'false'
+
+platform :ios do
+  desc "Upload iOS app to app store"
+  lane :deploy_ios do |options|
+    upload_to_testflight(
+      skip_submission: true,
+      skip_waiting_for_build_processing: true,
+      api_key_path: options[:api_key_path],
+      ipa: options[:ipa],
+    )
+  end
+
+  desc "Notification to Slack Deploy Integration test for QA"
+  lane :notification_to_slack_integration_test_for_qa do |options|
+    slack(
+      pretext: "Gitlab Artifact",
+      message: "#{options[:app_name]} successfully uploaded to gitlab artifact - #{options[:env]}.",
+      channel: options[:channel], # set #channel or @username
+      use_webhook_configured_username_and_icon: true,
+      success: true,
+      link_names: true,
+      slack_url: options[:webhook_slack],
+      payload: {
+          "Mention" => options[:mention_slack],
+          "Version" => "#{options[:version]} (#{options[:build]})",
+          "Ipa Link" => options[:app_link],
+          "Release Notes" => options[:release_notes],
+      },
+      default_payloads: [],
+    )
+  end
+
+  desc "Notificaion to Slack"
+  lane :notification_to_slack do |options|
+    slack(
+      pretext: "App Store",
+      message: "#{options[:app_name]} successfully uploaded to #{options[:upload_to]}.",
+      channel: options[:channel], # set #channel or @username
+      use_webhook_configured_username_and_icon: true,
+      success: true,
+      link_names: true,
+      slack_url: options[:webhook_slack],
+      payload: {
+          "Mention" => options[:mention_slack],
+          "Version" => "#{options[:version]} (#{options[:build]})",
+          "Release Notes" => options[:release_notes],
+      },
+      default_payloads: [],
+    )
+  end
+end

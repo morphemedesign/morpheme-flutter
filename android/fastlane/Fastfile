@@ -1,0 +1,94 @@
+# Uncomment the line if you want fastlane to automatically update itself
+# update_fastlane
+
+default_platform(:android)
+
+platform :android do
+  desc "Deploy (Upload to Firebase Distribution)"
+	lane :deploy_to_firebase_distribution do |options|
+		firebase_app_distribution(
+			app: options[:firebase_app_id],
+			firebase_cli_token: options[:token],
+			release_notes: options[:release_notes],
+			android_artifact_type: 'APK',
+			android_artifact_path: options[:android_artifact_path],
+			groups: options[:groups],
+		)
+	end
+
+
+  desc "Deploy (Upload to Play Store)"
+  lane :deploy_to_play_store do |options|
+    upload_to_play_store(
+      track: options[:production] ? 'production' : options[:internal] ? 'internal' : options[:alpha] ? 'alpha' : 'beta',
+      aab: options[:aab],
+      skip_upload_images: true,
+      skip_upload_screenshots: true,
+    )
+  end
+
+  desc "Notification to Slack Deploy to Firebase Distribution"
+  lane :notification_to_slack_firebase_distribution do |options|
+    FAD = firebase_app_distribution_get_latest_release(app: options[:firebase_app_id], firebase_cli_token: options[:token])
+    APP_LINK = FAD[:testingUri]
+    APP_VERSION = "#{FAD[:displayVersion]} (#{FAD[:buildVersion]})"
+    APP_RELEASE_NOTES = FAD[:releaseNotes][:text]
+
+    slack(
+      pretext: "Firebase Distributon",
+      message: "#{options[:app_name]} successfully uploaded to #{options[:upload_to]}.",
+      channel: options[:channel], # set #channel or @username
+      use_webhook_configured_username_and_icon: true,
+      success: true,
+      link_names: true,
+      slack_url: options[:webhook_slack],
+      payload: {
+          "Mention" => options[:mention_slack],
+          "Version" => APP_VERSION,
+          "Apk Link" => APP_LINK,
+          "Release Notes" => APP_RELEASE_NOTES,
+      },
+      default_payloads: [],
+    )
+  end
+
+  desc "Notification to Slack Deploy Integration test for QA"
+  lane :notification_to_slack_integration_test_for_qa do |options|
+    slack(
+      pretext: "Gitlab Artifact",
+      message: "#{options[:app_name]} successfully uploaded to gitlab artifact - #{options[:env]}.",
+      channel: options[:channel], # set #channel or @username
+      use_webhook_configured_username_and_icon: true,
+      success: true,
+      link_names: true,
+      slack_url: options[:webhook_slack],
+      payload: {
+          "Mention" => options[:mention_slack],
+          "Version" => "#{options[:version]} (#{options[:build]})",
+          "Apk Link" => options[:app_link],
+          "Release Notes" => options[:release_notes],
+      },
+      default_payloads: [],
+    )
+  end
+
+  desc "Notification to Slack Deploy to Play Store"
+  lane :notification_to_slack_play_store do |options|
+    slack(
+      pretext: "Play Store",
+      message: "#{options[:app_name]} successfully uploaded to #{options[:upload_to]}.",
+      channel: options[:channel], # set #channel or @username
+      use_webhook_configured_username_and_icon: true,
+      success: true,
+      link_names: true,
+      slack_url: options[:webhook_slack],
+      payload: {
+          "Mention" => options[:mention_slack],
+          "Version" => "#{options[:version]} (#{options[:build]})",
+          "Play Store Link" => options[:play_store_link],
+          "Release Notes" => options[:release_notes],
+      },
+      default_payloads: [],
+    )
+  end
+end

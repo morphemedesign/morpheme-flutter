@@ -1,0 +1,44 @@
+# brightness can be 'light' or 'dark'
+
+light:
+  brightness: light
+  colors:
+    white: "#FFFFFF"
+    black: "#1E1E1E"
+    grey: "#979797"
+    grey1: "#CFCFCF"
+    grey2: "#E5E5E5"
+    grey3: "#F5F5F5"
+    grey4: "#F9F9F9"
+    primary: "#28A0F6"
+    secondary: "#FDA06C"
+    primaryLighter: "#00AFC1"
+    warning: "#DAB320"
+    info: "#00AFC1"
+    success: "#22A82F"
+    error: "#D66767"
+    bgError: "#FFECEA"
+    bgInfo: "#DFFCFF"
+    bgSuccess: "#ECFFEE"
+    bgWarning: "#FFF9E3"
+dark:
+  brightness: dark
+  colors:
+    white: "#1E1E1E"
+    black: "#FFFFFF"
+    grey: "#979797"
+    grey1: "#F9F9F9"
+    grey2: "#F5F5F5"
+    grey3: "#E5E5E5"
+    grey4: "#CFCFCF"
+    primary: "#28A0F6"
+    secondary: "#FDA06C"
+    primaryLighter: "#00AFC1"
+    warning: "#DAB320"
+    info: "#00AFC1"
+    success: "#22A82F"
+    error: "#D66767"
+    bgError: "#FFECEA"
+    bgInfo: "#DFFCFF"
+    bgSuccess: "#ECFFEE"
+    bgWarning: "#FFF9E3"
