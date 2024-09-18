@@ -4,7 +4,10 @@ import '../models/body/register_body.dart';
 import '../models/response/register_response.dart';
 
 abstract class RegisterRemoteDataSource {
-  Future<RegisterResponse> register(RegisterBody body);
+  Future<RegisterResponse> register(
+    RegisterBody body, {
+    Map<String, String>? headers,
+  });
 }
 
 class RegisterRemoteDataSourceImpl implements RegisterRemoteDataSource {
@@ -13,10 +16,14 @@ class RegisterRemoteDataSourceImpl implements RegisterRemoteDataSource {
   final MorphemeHttp http;
 
   @override
-  Future<RegisterResponse> register(RegisterBody body) async {
+  Future<RegisterResponse> register(
+    RegisterBody body, {
+    Map<String, String>? headers,
+  }) async {
     final response = await http.post(
       MorphemeEndpoints.register,
       body: body.toMap(),
+      headers: headers,
       cacheStrategy: CacheOrAsyncStrategy(
         ttlValue: const Duration(minutes: 60),
       ),

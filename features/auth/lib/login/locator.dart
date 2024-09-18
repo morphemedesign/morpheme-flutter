@@ -9,18 +9,31 @@ import 'presentation/cubit/login_cubit.dart';
 
 void setupLocatorLogin() {
   // *Cubit
-  locator.registerFactory(() => LoginCubit(loginBloc: locator()));
-  // *Bloc
-  locator.registerFactory(() => LoginBloc(useCase: locator()));
+  locator
+    ..registerFactory(
+      () => LoginCubit(
+        loginBloc: locator(),
+      ),
+    )
+    // *Bloc
+    ..registerFactory(
+      () => LoginBloc(useCase: locator()),
+    )
 
-  // *Usecase
-  locator.registerLazySingleton(() => LoginUseCase(repository: locator()));
-  // *Repository
-  locator.registerLazySingleton<LoginRepository>(
-    () => LoginRepositoryImpl(remoteDataSource: locator()),
-  );
-  // *Datasource
-  locator.registerLazySingleton<LoginRemoteDataSource>(
-    () => LoginRemoteDataSourceImpl(http: locator()),
-  );
+    // *Usecase
+    ..registerLazySingleton(
+      () => LoginUseCase(repository: locator()),
+    )
+    // *Repository
+    ..registerLazySingleton<LoginRepository>(
+      () => LoginRepositoryImpl(
+        remoteDataSource: locator(),
+      ),
+    )
+    // *Datasource
+    ..registerLazySingleton<LoginRemoteDataSource>(
+      () => LoginRemoteDataSourceImpl(
+        http: locator(),
+      ),
+    );
 }

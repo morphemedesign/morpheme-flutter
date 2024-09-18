@@ -20,10 +20,10 @@ class _LoginPageState extends State<LoginPage>
   @override
   Widget buildWidget(BuildContext context) {
     return Scaffold(
-      key: const ValueKey(MorphemeDataTesId.pageLogin),
+      key: const ValueKey(ConstantDataTesId.pageLogin),
       appBar: AppBar(title: Text(context.s.login)),
       body: SingleChildScrollView(
-        key: const ValueKey(MorphemeDataTesId.scrollLogin),
+        key: const ValueKey(ConstantDataTesId.scrollLogin),
         padding: const EdgeInsets.all(16),
         child: Column(
           children: [

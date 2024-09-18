@@ -9,20 +9,31 @@ import 'presentation/cubit/forgot_password_cubit.dart';
 
 void setupLocatorForgotPassword() {
   // *Cubit
-  locator.registerFactory(
-      () => ForgotPasswordCubit(forgotPasswordBloc: locator()));
-  // *Bloc
-  locator.registerFactory(() => ForgotPasswordBloc(useCase: locator()));
+  locator
+    ..registerFactory(
+      () => ForgotPasswordCubit(
+        forgotPasswordBloc: locator(),
+      ),
+    )
+    // *Bloc
+    ..registerFactory(
+      () => ForgotPasswordBloc(useCase: locator()),
+    )
 
-  // *Usecase
-  locator.registerLazySingleton(
-      () => ForgotPasswordUseCase(repository: locator()));
-  // *Repository
-  locator.registerLazySingleton<ForgotPasswordRepository>(
-    () => ForgotPasswordRepositoryImpl(remoteDataSource: locator()),
-  );
-  // *Datasource
-  locator.registerLazySingleton<ForgotPasswordRemoteDataSource>(
-    () => ForgotPasswordRemoteDataSourceImpl(http: locator()),
-  );
+    // *Usecase
+    ..registerLazySingleton(
+      () => ForgotPasswordUseCase(repository: locator()),
+    )
+    // *Repository
+    ..registerLazySingleton<ForgotPasswordRepository>(
+      () => ForgotPasswordRepositoryImpl(
+        remoteDataSource: locator(),
+      ),
+    )
+    // *Datasource
+    ..registerLazySingleton<ForgotPasswordRemoteDataSource>(
+      () => ForgotPasswordRemoteDataSourceImpl(
+        http: locator(),
+      ),
+    );
 }

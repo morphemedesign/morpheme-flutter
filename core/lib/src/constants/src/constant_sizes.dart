@@ -1,4 +1,4 @@
-abstract final class MorphemeSizes {
+abstract final class ConstantSizes {
   static const double s4 = 4;
   static const double s8 = 8;
   static const double s12 = 12;
@@ -20,5 +20,5 @@ abstract final class MorphemeSizes {
   static const double s76 = 76;
   static const double s80 = 80;
 
-  static const double heightButton = s52;
+  static const double heightButton = s48;
 }

@@ -2,6 +2,16 @@ part of 'login_bloc.dart';
 
 @immutable
 abstract class LoginState extends Equatable {
+  bool get isInitial => this is LoginInitial;
+  bool get isLoading => this is LoginLoading;
+  bool get isFailed => this is LoginFailed;
+  bool get isSuccess => this is LoginSuccess;
+
+  bool get isNotInitial => this is! LoginInitial;
+  bool get isNotLoading => this is! LoginLoading;
+  bool get isNotFailed => this is! LoginFailed;
+  bool get isNotSuccess => this is! LoginSuccess;
+
   void when({
     void Function(LoginInitial state)? onInitial,
     void Function(LoginLoading state)? onLoading,
@@ -50,33 +60,64 @@ class LoginInitial extends LoginState {
 }
 
 class LoginLoading extends LoginState {
-  LoginLoading(this.body, this.extra);
+  LoginLoading(
+    this.body,
+    this.headers,
+    this.extra,
+  );
 
   final LoginBody body;
+  final Map<String, String>? headers;
   final dynamic extra;
 
   @override
-  List<Object?> get props => [body, extra];
+  List<Object?> get props => [
+        body,
+        headers,
+        extra,
+      ];
 }
 
 class LoginSuccess extends LoginState {
-  LoginSuccess(this.body, this.data, this.extra);
+  LoginSuccess(
+    this.body,
+    this.headers,
+    this.data,
+    this.extra,
+  );
 
   final LoginBody body;
+  final Map<String, String>? headers;
   final LoginEntity data;
   final dynamic extra;
 
   @override
-  List<Object?> get props => [body, data, extra];
+  List<Object?> get props => [
+        body,
+        headers,
+        data,
+        extra,
+      ];
 }
 
 class LoginFailed extends LoginState {
-  LoginFailed(this.body, this.failure, this.extra);
+  LoginFailed(
+    this.body,
+    this.headers,
+    this.failure,
+    this.extra,
+  );
 
   final LoginBody body;
+  final Map<String, String>? headers;
   final MorphemeFailure failure;
   final dynamic extra;
 
   @override
-  List<Object?> get props => [body, failure, extra];
+  List<Object?> get props => [
+        body,
+        headers,
+        failure,
+        extra,
+      ];
 }

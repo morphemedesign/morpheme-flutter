@@ -47,16 +47,16 @@ class MorphemeStatusMessage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.symmetric(
-        horizontal: MorphemeSizes.s16,
-        vertical: MorphemeSizes.s8,
+        horizontal: ConstantSizes.s16,
+        vertical: ConstantSizes.s8,
       ),
       decoration: BoxDecoration(
         color: backgroundColor,
-        borderRadius: BorderRadius.circular(MorphemeSizes.s8),
+        borderRadius: BorderRadius.circular(ConstantSizes.s8),
       ),
       child: Row(
         children: [
-          Icon(iconData, size: MorphemeSizes.s16, color: color),
+          Icon(iconData, size: ConstantSizes.s16, color: color),
           const MorphemeSpacing.horizontal8(),
           Expanded(
             child: Text(

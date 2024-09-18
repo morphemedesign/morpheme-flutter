@@ -5,15 +5,15 @@ import 'package:core/core.dart';
 
 List<RouteBase> authRoutes = [
   GoRoute(
-    path: joinRoutes([MorphemeRoutes.login]),
+    path: joinRoutes([ConstantRoutes.login]),
     builder: (context, state) => const LoginPage(),
     routes: [
       GoRoute(
-        path: MorphemeRoutes.register,
+        path: ConstantRoutes.register,
         builder: (context, state) => const RegisterPage(),
       ),
       GoRoute(
-        path: MorphemeRoutes.forgotPassword,
+        path: ConstantRoutes.forgotPassword,
         builder: (context, state) => const ForgotPasswordPage(),
       ),
     ],

@@ -9,18 +9,31 @@ import 'presentation/cubit/register_cubit.dart';
 
 void setupLocatorRegister() {
   // *Cubit
-  locator.registerFactory(() => RegisterCubit(registerBloc: locator()));
-  // *Bloc
-  locator.registerFactory(() => RegisterBloc(useCase: locator()));
+  locator
+    ..registerFactory(
+      () => RegisterCubit(
+        registerBloc: locator(),
+      ),
+    )
+    // *Bloc
+    ..registerFactory(
+      () => RegisterBloc(useCase: locator()),
+    )
 
-  // *Usecase
-  locator.registerLazySingleton(() => RegisterUseCase(repository: locator()));
-  // *Repository
-  locator.registerLazySingleton<RegisterRepository>(
-    () => RegisterRepositoryImpl(remoteDataSource: locator()),
-  );
-  // *Datasource
-  locator.registerLazySingleton<RegisterRemoteDataSource>(
-    () => RegisterRemoteDataSourceImpl(http: locator()),
-  );
+    // *Usecase
+    ..registerLazySingleton(
+      () => RegisterUseCase(repository: locator()),
+    )
+    // *Repository
+    ..registerLazySingleton<RegisterRepository>(
+      () => RegisterRepositoryImpl(
+        remoteDataSource: locator(),
+      ),
+    )
+    // *Datasource
+    ..registerLazySingleton<RegisterRemoteDataSource>(
+      () => RegisterRemoteDataSourceImpl(
+        http: locator(),
+      ),
+    );
 }

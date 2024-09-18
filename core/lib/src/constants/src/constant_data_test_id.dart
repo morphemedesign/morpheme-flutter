@@ -1,4 +1,4 @@
-abstract final class MorphemeDataTesId {
+abstract final class ConstantDataTesId {
   // Common
   static const String pageMain = 'pageMain';
   static const String buttonSignInWithFacebook = 'buttonSignInWithFacebook';

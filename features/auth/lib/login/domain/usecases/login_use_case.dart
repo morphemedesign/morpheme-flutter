@@ -12,7 +12,10 @@ class LoginUseCase implements UseCase<LoginEntity, LoginBody> {
   final LoginRepository repository;
 
   @override
-  Future<Either<MorphemeFailure, LoginEntity>> call(LoginBody body) {
-    return repository.login(body);
+  Future<Either<MorphemeFailure, LoginEntity>> call(
+    LoginBody body, {
+    Map<String, String>? headers,
+  }) {
+    return repository.login(body, headers: headers);
   }
 }

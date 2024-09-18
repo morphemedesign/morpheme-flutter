@@ -12,7 +12,10 @@ class RegisterUseCase implements UseCase<RegisterEntity, RegisterBody> {
   final RegisterRepository repository;
 
   @override
-  Future<Either<MorphemeFailure, RegisterEntity>> call(RegisterBody body) {
-    return repository.register(body);
+  Future<Either<MorphemeFailure, RegisterEntity>> call(
+    RegisterBody body, {
+    Map<String, String>? headers,
+  }) {
+    return repository.register(body, headers: headers);
   }
 }

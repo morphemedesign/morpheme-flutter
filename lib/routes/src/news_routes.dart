@@ -5,7 +5,7 @@ List<StatefulShellBranch> newsRoutes = [
   StatefulShellBranch(
     routes: [
       GoRoute(
-        path: PathRoutes.news,
+        path:  joinRoutes([ConstantRoutes.news]),
         builder: (context, state) => const NewsPage(),
       ),
     ],

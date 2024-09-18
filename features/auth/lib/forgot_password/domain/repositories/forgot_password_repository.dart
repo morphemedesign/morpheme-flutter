@@ -5,5 +5,7 @@ import '../entities/forgot_password_entity.dart';
 
 abstract class ForgotPasswordRepository {
   Future<Either<MorphemeFailure, ForgotPasswordEntity>> forgotPassword(
-      ForgotPasswordBody body);
+    ForgotPasswordBody body, {
+    Map<String, String>? headers,
+  });
 }

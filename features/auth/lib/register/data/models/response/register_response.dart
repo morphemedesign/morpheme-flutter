@@ -8,6 +8,18 @@ class RegisterResponse extends Equatable {
     required this.token,
   });
 
+  factory RegisterResponse.fromMap(
+    Map<String, dynamic> map,
+  ) {
+    return RegisterResponse(
+      id: int.tryParse(map['id']?.toString() ?? ''),
+      token: map['token'],
+    );
+  }
+
+  factory RegisterResponse.fromJson(String source) =>
+      RegisterResponse.fromMap(json.decode(source));
+
   final int? id;
   final String? token;
 
@@ -18,17 +30,7 @@ class RegisterResponse extends Equatable {
     };
   }
 
-  factory RegisterResponse.fromMap(Map<String, dynamic> map) {
-    return RegisterResponse(
-      id: int.tryParse(map['id']?.toString() ?? ''),
-      token: map['token'],
-    );
-  }
-
   String toJson() => json.encode(toMap());
-
-  factory RegisterResponse.fromJson(String source) =>
-      RegisterResponse.fromMap(json.decode(source));
 
   @override
   List<Object?> get props => [

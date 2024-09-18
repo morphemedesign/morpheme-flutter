@@ -18,7 +18,7 @@ class MorphemeSnackBar extends SnackBar {
           duration: duration ?? const Duration(seconds: 3),
           behavior: SnackBarBehavior.floating,
           shape: const RoundedRectangleBorder(
-            borderRadius: BorderRadius.all(Radius.circular(MorphemeSizes.s8)),
+            borderRadius: BorderRadius.all(Radius.circular(ConstantSizes.s8)),
           ),
         );
 
@@ -37,7 +37,7 @@ class MorphemeSnackBar extends SnackBar {
           duration: duration ?? const Duration(seconds: 3),
           behavior: SnackBarBehavior.floating,
           shape: const RoundedRectangleBorder(
-            borderRadius: BorderRadius.all(Radius.circular(MorphemeSizes.s8)),
+            borderRadius: BorderRadius.all(Radius.circular(ConstantSizes.s8)),
           ),
         );
 
@@ -56,7 +56,7 @@ class MorphemeSnackBar extends SnackBar {
           duration: duration ?? const Duration(seconds: 3),
           behavior: SnackBarBehavior.floating,
           shape: const RoundedRectangleBorder(
-            borderRadius: BorderRadius.all(Radius.circular(MorphemeSizes.s8)),
+            borderRadius: BorderRadius.all(Radius.circular(ConstantSizes.s8)),
           ),
         );
 
@@ -75,7 +75,7 @@ class MorphemeSnackBar extends SnackBar {
           duration: duration ?? const Duration(seconds: 3),
           behavior: SnackBarBehavior.floating,
           shape: const RoundedRectangleBorder(
-            borderRadius: BorderRadius.all(Radius.circular(MorphemeSizes.s8)),
+            borderRadius: BorderRadius.all(Radius.circular(ConstantSizes.s8)),
           ),
         );
 }

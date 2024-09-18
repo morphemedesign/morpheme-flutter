@@ -27,7 +27,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage>
     return Scaffold(
       appBar: AppBar(title: Text(context.s.forgotPassword)),
       body: ListView(
-        padding: const EdgeInsets.all(MorphemeSizes.s16),
+        padding: const EdgeInsets.all(ConstantSizes.s16),
         children: [
           MorphemeText.bodyMedium(
             context.s.messageForgotPassword,

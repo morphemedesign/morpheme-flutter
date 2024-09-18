@@ -2,6 +2,16 @@ part of 'forgot_password_bloc.dart';
 
 @immutable
 abstract class ForgotPasswordState extends Equatable {
+  bool get isInitial => this is ForgotPasswordInitial;
+  bool get isLoading => this is ForgotPasswordLoading;
+  bool get isFailed => this is ForgotPasswordFailed;
+  bool get isSuccess => this is ForgotPasswordSuccess;
+
+  bool get isNotInitial => this is! ForgotPasswordInitial;
+  bool get isNotLoading => this is! ForgotPasswordLoading;
+  bool get isNotFailed => this is! ForgotPasswordFailed;
+  bool get isNotSuccess => this is! ForgotPasswordSuccess;
+
   void when({
     void Function(ForgotPasswordInitial state)? onInitial,
     void Function(ForgotPasswordLoading state)? onLoading,
@@ -50,33 +60,64 @@ class ForgotPasswordInitial extends ForgotPasswordState {
 }
 
 class ForgotPasswordLoading extends ForgotPasswordState {
-  ForgotPasswordLoading(this.body, this.extra);
+  ForgotPasswordLoading(
+    this.body,
+    this.headers,
+    this.extra,
+  );
 
   final ForgotPasswordBody body;
+  final Map<String, String>? headers;
   final dynamic extra;
 
   @override
-  List<Object?> get props => [body, extra];
+  List<Object?> get props => [
+        body,
+        headers,
+        extra,
+      ];
 }
 
 class ForgotPasswordSuccess extends ForgotPasswordState {
-  ForgotPasswordSuccess(this.body, this.data, this.extra);
+  ForgotPasswordSuccess(
+    this.body,
+    this.headers,
+    this.data,
+    this.extra,
+  );
 
   final ForgotPasswordBody body;
+  final Map<String, String>? headers;
   final ForgotPasswordEntity data;
   final dynamic extra;
 
   @override
-  List<Object?> get props => [body, data, extra];
+  List<Object?> get props => [
+        body,
+        headers,
+        data,
+        extra,
+      ];
 }
 
 class ForgotPasswordFailed extends ForgotPasswordState {
-  ForgotPasswordFailed(this.body, this.failure, this.extra);
+  ForgotPasswordFailed(
+    this.body,
+    this.headers,
+    this.failure,
+    this.extra,
+  );
 
   final ForgotPasswordBody body;
+  final Map<String, String>? headers;
   final MorphemeFailure failure;
   final dynamic extra;
 
   @override
-  List<Object?> get props => [body, failure, extra];
+  List<Object?> get props => [
+        body,
+        headers,
+        failure,
+        extra,
+      ];
 }

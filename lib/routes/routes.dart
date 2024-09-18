@@ -9,7 +9,7 @@ abstract class Routes {
   static GoRouter router = GoRouter(
     navigatorKey: rootNavigatorKey,
     debugLogDiagnostics: kDebugMode,
-    initialLocation: joinRoutes([MorphemeRoutes.splash]),
+    initialLocation: ConstantRoutes.splash,
     routes: [
       ...splashRoutes,
       ...onboardingRoutes,

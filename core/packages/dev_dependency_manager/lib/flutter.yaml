@@ -1,0 +1,79 @@
+include: package:flutter_lints/flutter.yaml
+# Additional information about this file can be found at
+# https://dart.dev/guides/language/analysis-options
+# linter: https://dart.dev/tools/linter-rules
+
+# linter:
+#   rules:
+#     # Error Linter
+#     # Avoid slow asynchronous dart:io methods.
+#     - avoid_slow_async_io
+#     # Cancel instances of dart:async StreamSubscription.
+#     - cancel_subscriptions
+#     # Close instances of dart:core Sink.
+#     - close_sinks
+#     # Only reference in scope identifiers in doc comments.
+#     - comment_references
+#     # Don't invoke asynchronous functions in non-async blocks.
+#     - discarded_futures
+#     # Don't assign a variable to itself.
+#     - no_self_assignments
+#     # Don't use the Null type, unless you are positive that you don't want void.
+#     - prefer_void_to_null
+#     # Avoid using unnecessary statements.
+#     - unnecessary_statements
+
+#     # Style Linter
+#     # Declare method return types.
+#     - always_declare_return_types
+#     # Put required named parameters first.
+#     - always_put_required_named_parameters_first
+#     # Avoid bool literals in conditional expressions.
+#     - avoid_bool_literals_in_conditional_expressions
+#     # Don't declare multiple variables on a single line.
+#     - avoid_multiple_declarations_per_line
+#     # Avoid positional boolean parameters.
+#     - avoid_positional_boolean_parameters
+#     # Avoid returning this from methods just to enable a fluent interface.
+#     - avoid_returning_this
+#     # Avoid async functions that return void.
+#     - avoid_void_async
+#     # Cascade consecutive method invocations on the same reference.
+#     - cascade_invocations
+#     # Join return statement with assignment when possible.
+#     - join_return_with_assignment
+#     # Don't compare booleans to boolean literals.
+#     - no_literal_bool_comparisons
+#     # Only use double quotes for strings containing single quotes.
+#     - prefer_single_quotes
+#     # Prefer final in for-each loop variable if reference is not reassigned.
+#     - prefer_final_in_for_each
+#     # Prefer final for variable declarations if they are not reassigned.
+#     - prefer_final_locals
+#     # Prefer if elements to conditional expressions where possible.
+#     - prefer_if_elements_to_conditional_expressions
+#     # Prefer null-aware method calls.
+#     - prefer_null_aware_method_calls
+#     # Use trailing commas for all parameter lists and argument lists.
+#     - require_trailing_commas
+#     # Sort constructor declarations before other members.
+#     - sort_constructors_first
+#     # Sort unnamed constructor declarations first.
+#     - sort_unnamed_constructors_first
+#     # Type annotate public APIs.
+#     - type_annotate_public_apis
+#     # Unnecessary parentheses can be removed.
+#     - unnecessary_parenthesis
+#     # Use ColoredBox.
+#     - use_colored_box
+#     # Use DecoratedBox.
+#     - use_decorated_box
+#     # Use ?? operators to convert nulls to bools.
+#     - use_if_null_to_convert_nulls_to_bools
+#     # Prefer intValue.isOdd/isEven instead of checking the result of % 2.
+#     - use_is_even_rather_than_modulo
+#     # Use predefined named constants.
+#     - use_named_constants
+
+analyzer:
+  exclude: [test/coverage_helper_test.dart]

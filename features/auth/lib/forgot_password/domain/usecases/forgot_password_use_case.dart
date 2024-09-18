@@ -14,7 +14,9 @@ class ForgotPasswordUseCase
 
   @override
   Future<Either<MorphemeFailure, ForgotPasswordEntity>> call(
-      ForgotPasswordBody body) {
-    return repository.forgotPassword(body);
+    ForgotPasswordBody body, {
+    Map<String, String>? headers,
+  }) {
+    return repository.forgotPassword(body, headers: headers);
   }
 }

@@ -3,7 +3,7 @@ import 'package:splash/splash_page.dart';
 
 List<RouteBase> splashRoutes = [
   GoRoute(
-    path: joinRoutes([MorphemeRoutes.splash]),
+    path: joinRoutes([ConstantRoutes.splash]),
     builder: (context, state) => const SplashPage(),
   ),
 ];

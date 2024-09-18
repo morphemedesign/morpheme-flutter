@@ -32,55 +32,55 @@ abstract base class MorphemeTheme {
           fillColor: color.white,
           filled: true,
           contentPadding: const EdgeInsets.symmetric(
-            horizontal: MorphemeSizes.s16,
-            vertical: MorphemeSizes.s8,
+            horizontal: ConstantSizes.s16,
+            vertical: ConstantSizes.s8,
           ),
           enabledBorder: OutlineInputBorder(
             borderSide: BorderSide(color: color.grey1, width: 1),
-            borderRadius: BorderRadius.circular(MorphemeSizes.s8),
+            borderRadius: BorderRadius.circular(ConstantSizes.s8),
           ),
           focusedBorder: OutlineInputBorder(
             borderSide: BorderSide(color: color.grey1, width: 1),
-            borderRadius: BorderRadius.circular(MorphemeSizes.s8),
+            borderRadius: BorderRadius.circular(ConstantSizes.s8),
           ),
           focusedErrorBorder: OutlineInputBorder(
             borderSide: BorderSide(color: color.grey1, width: 1),
-            borderRadius: BorderRadius.circular(MorphemeSizes.s8),
+            borderRadius: BorderRadius.circular(ConstantSizes.s8),
           ),
           errorBorder: OutlineInputBorder(
             borderSide: BorderSide(color: color.error, width: 1),
-            borderRadius: BorderRadius.circular(MorphemeSizes.s8),
+            borderRadius: BorderRadius.circular(ConstantSizes.s8),
           ),
           disabledBorder: OutlineInputBorder(
             borderSide: BorderSide(color: color.grey1, width: 1),
-            borderRadius: BorderRadius.circular(MorphemeSizes.s8),
+            borderRadius: BorderRadius.circular(ConstantSizes.s8),
           ),
         ),
         elevatedButtonTheme: ElevatedButtonThemeData(
           style: ElevatedButton.styleFrom(
             textStyle: _getTextTheme.labelLarge,
             shape: const RoundedRectangleBorder(
-              borderRadius: BorderRadius.all(Radius.circular(MorphemeSizes.s8)),
+              borderRadius: BorderRadius.all(Radius.circular(ConstantSizes.s8)),
             ),
-            padding: const EdgeInsets.symmetric(horizontal: MorphemeSizes.s16),
+            padding: const EdgeInsets.symmetric(horizontal: ConstantSizes.s16),
           ),
         ),
         outlinedButtonTheme: OutlinedButtonThemeData(
           style: OutlinedButton.styleFrom(
             textStyle: _getTextTheme.labelLarge,
             shape: const RoundedRectangleBorder(
-              borderRadius: BorderRadius.all(Radius.circular(MorphemeSizes.s8)),
+              borderRadius: BorderRadius.all(Radius.circular(ConstantSizes.s8)),
             ),
-            padding: const EdgeInsets.symmetric(horizontal: MorphemeSizes.s16),
+            padding: const EdgeInsets.symmetric(horizontal: ConstantSizes.s16),
           ),
         ),
         textButtonTheme: TextButtonThemeData(
           style: TextButton.styleFrom(
             textStyle: _getTextTheme.labelLarge,
             shape: const RoundedRectangleBorder(
-              borderRadius: BorderRadius.all(Radius.circular(MorphemeSizes.s8)),
+              borderRadius: BorderRadius.all(Radius.circular(ConstantSizes.s8)),
             ),
-            padding: const EdgeInsets.symmetric(horizontal: MorphemeSizes.s16),
+            padding: const EdgeInsets.symmetric(horizontal: ConstantSizes.s16),
           ),
         ),
       );

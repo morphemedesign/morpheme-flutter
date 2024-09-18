@@ -3,7 +3,7 @@ import 'package:onboarding/onboarding/presentation/pages/onboarding_page.dart';
 
 List<RouteBase> onboardingRoutes = [
   GoRoute(
-    path: joinRoutes([MorphemeRoutes.onboarding]),
+    path: joinRoutes([ConstantRoutes.onboarding]),
     builder: (context, state) => const OnboardingPage(),
   ),
 ];

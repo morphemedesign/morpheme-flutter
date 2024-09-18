@@ -18,7 +18,7 @@ class MainPage extends StatelessWidget {
     context.selectedTheme;
 
     return Scaffold(
-      key: const ValueKey(MorphemeDataTesId.pageMain),
+      key: const ValueKey(ConstantDataTesId.pageMain),
       body: navigationShell,
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,

@@ -71,7 +71,7 @@ class MorphemeButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return SizedBox(
       width: isExpand ? double.infinity : null,
-      height: MorphemeSizes.heightButton,
+      height: ConstantSizes.heightButton,
       child: Builder(
         builder: (context) {
           switch (_type) {

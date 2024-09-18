@@ -19,19 +19,19 @@ class _OnboardingPageState extends State<OnboardingPage>
   @override
   Widget buildWidget(BuildContext context) {
     return Scaffold(
-      key: const ValueKey(MorphemeDataTesId.pageOnboarding),
+      key: const ValueKey(ConstantDataTesId.pageOnboarding),
       body: Stack(
         children: [
           PageView(
-            key: const ValueKey(MorphemeDataTesId.scrollOnboarding),
+            key: const ValueKey(ConstantDataTesId.scrollOnboarding),
             controller: cubit.pageController,
             onPageChanged: cubit.onPageChange,
             children: cubit.listOnboarding,
           ),
           const Positioned(
-            left: MorphemeSizes.s16,
-            right: MorphemeSizes.s16,
-            bottom: MorphemeSizes.s16,
+            left: ConstantSizes.s16,
+            right: ConstantSizes.s16,
+            bottom: ConstantSizes.s16,
             child: OnboardingButton(),
           ),
         ],

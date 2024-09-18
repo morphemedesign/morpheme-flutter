@@ -1,3 +1,4 @@
+import 'package:core/src/extensions/extensions.dart';
 import 'package:core/src/global_variable.dart';
 import 'package:dependency_manager/dependency_manager.dart'
     show GoRouter, GoRouterHelper, IterableExtension;
@@ -5,16 +6,18 @@ import 'package:flutter/material.dart';
 
 Map<String, dynamic> _resultGoRouter = {};
 
+typedef GoRouterCallbackReturn = void Function(dynamic result);
+
 extension GoRouterOnBuildContextExtension on BuildContext {
   void _watchRouteChange(
     String currentPath,
-    void Function(dynamic) onReturn,
+    GoRouterCallbackReturn? onReturn,
     VoidCallback listener,
   ) {
     final goRouter = locator<GoRouter>();
     final uri = goRouter.routerDelegate.currentConfiguration.uri;
     if (uri.path == currentPath) {
-      onReturn(_resultGoRouter[currentPath]);
+      if (onReturn != null) onReturn(_resultGoRouter[currentPath]);
       _resultGoRouter.remove(currentPath);
       goRouter.routerDelegate.removeListener(listener);
     }
@@ -22,27 +25,27 @@ extension GoRouterOnBuildContextExtension on BuildContext {
 
   void goWithResult(
     String path, {
+   GoRouterCallbackReturn? onReturn,
     Object? extra,
-    required void Function(dynamic result) onReturn,
   }) {
     final goRouter = locator<GoRouter>();
     final uri = goRouter.routerDelegate.currentConfiguration.uri;
     _resultGoRouter[uri.path] = null;
     go(path, extra: extra);
-    listener() => _watchRouteChange(uri.path, onReturn, listener);
+    void listener() => _watchRouteChange(uri.path, onReturn, listener);
     goRouter.routerDelegate.addListener(listener);
   }
 
-  void pushWithResult(
+  Future<void> pushWithResult(
     String path, {
+   GoRouterCallbackReturn? onReturn,
     Object? extra,
-    required void Function(dynamic result) onReturn,
-  }) {
+  }) async {
     final goRouter = locator<GoRouter>();
     final uri = goRouter.routerDelegate.currentConfiguration.uri;
     _resultGoRouter[uri.path] = null;
     push(path, extra: extra);
-    listener() => _watchRouteChange(uri.path, onReturn, listener);
+    void listener() => _watchRouteChange(uri.path, onReturn, listener);
     goRouter.routerDelegate.addListener(listener);
   }
 
@@ -61,10 +64,9 @@ extension GoRouterOnBuildContextExtension on BuildContext {
   String? getPreviousPathResultAvailable() {
     final goRouter = locator<GoRouter>();
     final uri = goRouter.routerDelegate.currentConfiguration.uri;
-    final splitPath = List.from(uri.path.split('/'));
-    splitPath.removeLast();
+    final splitPath = List.from(uri.path.split('/'))..removeLast();
     final path = splitPath.join('/');
-    for (var element in _resultGoRouter.keys) {
+    for (final element in _resultGoRouter.keys) {
       if (path == element) return element;
     }
     return null;
@@ -76,7 +78,7 @@ extension GoRouterOnBuildContextExtension on BuildContext {
     if (path != null) {
       if (uri.path == path) return path;
     } else {
-      for (var element in _resultGoRouter.keys) {
+      for (final element in _resultGoRouter.keys) {
         if (uri.path.contains(element)) return element;
       }
     }
@@ -84,9 +86,33 @@ extension GoRouterOnBuildContextExtension on BuildContext {
   }
 
   void setResultForPath(String path, {required dynamic result}) {
-    assert(() {
-      return isPathResultAvailable(path);
-    }(), 'You dont have a listener on this path');
+    assert(
+      () {
+        return isPathResultAvailable(path);
+      }(),
+      'You dont have a listener on this path',
+    );
     _resultGoRouter[path] = result;
+  }
+
+  void backUntilAndGo({
+    required String backUntil,
+    required String path,
+    Map<String, String>? queryParameters,
+  }) {
+    final goRouter = locator<GoRouter>();
+    final currentUrl = goRouter.routerDelegate.currentConfiguration.uri;
+
+    final paths = currentUrl.path.split('/');
+    final indexCheckpointDetail = paths.indexOf(backUntil) + 1;
+
+    paths
+      ..removeRange(
+        indexCheckpointDetail,
+        paths.length,
+      )
+      ..add(path);
+
+    go(paths.join('/').withQueryParameters(queryParameters ?? {}));
   }
 }

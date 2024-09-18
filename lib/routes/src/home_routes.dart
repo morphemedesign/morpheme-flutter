@@ -6,11 +6,11 @@ List<StatefulShellBranch> homeRoutes = [
   StatefulShellBranch(
     routes: [
       GoRoute(
-        path: PathRoutes.home,
+        path: joinRoutes([ConstantRoutes.home]),
         builder: (context, state) => const HomePage(),
         routes: [
           GoRoute(
-            path: MorphemeRoutes.selling,
+            path: ConstantRoutes.selling,
             parentNavigatorKey: rootNavigatorKey,
             builder: (context, state) => const SellingPage(),
           ),

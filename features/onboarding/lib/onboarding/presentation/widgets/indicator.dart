@@ -25,9 +25,9 @@ class Indicator extends StatelessWidget {
               context.read<OnboardingCubit>().onPageChangeExternal(index),
           child: Container(
             key: Key('dot$index'),
-            margin: const EdgeInsets.all(MorphemeSizes.s4),
-            width: MorphemeSizes.s8,
-            height: MorphemeSizes.s8,
+            margin: const EdgeInsets.all(ConstantSizes.s4),
+            width: ConstantSizes.s8,
+            height: ConstantSizes.s8,
             decoration: BoxDecoration(
               color: index == selected
                   ? context.color.primary

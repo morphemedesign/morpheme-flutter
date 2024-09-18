@@ -23,7 +23,7 @@ class NewRegister extends StatelessWidget {
           ),
         ],
       ),
-      key: const ValueKey(MorphemeDataTesId.newAccountRegister),
+      key: const ValueKey(ConstantDataTesId.newAccountRegister),
       textAlign: TextAlign.center,
       style: context.labelLarge?.apply(color: context.color.grey),
     );

@@ -1,5 +1,5 @@
 import 'package:core/src/component/molecules/morpheme_button/morpheme_button.dart';
-import 'package:core/src/constants/src/morpheme_sizes.dart';
+import 'package:core/src/constants/src/constant_sizes.dart';
 import 'package:core/src/extensions/extensions.dart';
 import 'package:flutter/material.dart';
 
@@ -34,14 +34,14 @@ class MorphemeSigninButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return SizedBox(
       width: isExpand ? double.infinity : null,
-      height: MorphemeSizes.heightButton,
+      height: ConstantSizes.heightButton,
       child: MorphemeButton.elevated(
         onPressed: onPressed,
         text: text ?? buttonType.text,
         textStyle: context.textTheme.labelLarge?.copyWith(
           color: buttonType.textColor,
         ),
-        icon: Image.asset(buttonType.pathAsset, height: MorphemeSizes.s24),
+        icon: Image.asset(buttonType.pathAsset, height: ConstantSizes.s24),
         style: ElevatedButton.styleFrom(backgroundColor: buttonType.color),
       ),
     );

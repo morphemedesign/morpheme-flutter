@@ -20,7 +20,7 @@ class LoginWithEmail extends StatelessWidget {
       children: [
         MorphemeTextField(
           key: emailKey,
-          textfieldKey: const ValueKey(MorphemeDataTesId.inputEmail),
+          textfieldKey: const ValueKey(ConstantDataTesId.inputEmail),
           title: context.s.email,
           keyboardType: TextInputType.emailAddress,
           decoration: InputDecoration(hintText: context.s.yourEmail),
@@ -30,7 +30,7 @@ class LoginWithEmail extends StatelessWidget {
         const MorphemeSpacing.vertical16(),
         MorphemeTextField(
           key: passwordKey,
-          textfieldKey: const ValueKey(MorphemeDataTesId.inputPassword),
+          textfieldKey: const ValueKey(ConstantDataTesId.inputPassword),
           isPassword: true,
           title: context.s.password,
           decoration: const InputDecoration(hintText: '******'),
@@ -40,14 +40,14 @@ class LoginWithEmail extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             MorphemeButton.text(
-              key: const ValueKey(MorphemeDataTesId.buttonAccountDemo),
+              key: const ValueKey(ConstantDataTesId.buttonAccountDemo),
               isExpand: false,
               text: context.s.accountDemo,
               onPressed: () =>
                   context.read<LoginCubit>().onAccountDemoPressed(context),
             ),
             MorphemeButton.text(
-              key: const ValueKey(MorphemeDataTesId.buttonForgotPassword),
+              key: const ValueKey(ConstantDataTesId.buttonForgotPassword),
               isExpand: false,
               text: '${context.s.forgotPassword}?',
               onPressed: () =>
@@ -57,7 +57,7 @@ class LoginWithEmail extends StatelessWidget {
         ),
         const MorphemeSpacing.vertical16(),
         MorphemeButton.elevated(
-          key: const ValueKey(MorphemeDataTesId.buttonLoginWithEmail),
+          key: const ValueKey(ConstantDataTesId.buttonLoginWithEmail),
           isLoading: watchLoginState is LoginLoading,
           text: context.s.loginWithEmail,
           onPressed: () =>

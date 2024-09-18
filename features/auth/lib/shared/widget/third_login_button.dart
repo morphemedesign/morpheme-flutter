@@ -18,19 +18,19 @@ class ThirdLoginButton extends StatelessWidget {
     return Column(
       children: [
         MorphemeSigninButton(
-          key: const ValueKey(MorphemeDataTesId.buttonSignInWithFacebook),
+          key: const ValueKey(ConstantDataTesId.buttonSignInWithFacebook),
           onPressed: onFacebookPressed,
           buttonType: MorphemeSigninTypeFacebook(),
         ),
         const MorphemeSpacing.vertical16(),
         MorphemeSigninButton(
-          key: const ValueKey(MorphemeDataTesId.buttonSignInWithGoogle),
+          key: const ValueKey(ConstantDataTesId.buttonSignInWithGoogle),
           onPressed: onGooglePressed,
           buttonType: MorphemeSigninTypeGoogle(),
         ),
         const MorphemeSpacing.vertical16(),
         MorphemeSigninButton(
-          key: const ValueKey(MorphemeDataTesId.buttonSignInWithApple),
+          key: const ValueKey(ConstantDataTesId.buttonSignInWithApple),
           onPressed: onApplePressed,
           buttonType: MorphemeSigninTypeApple(),
         ),

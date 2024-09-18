@@ -20,7 +20,7 @@ class _SellingPageState extends State<SellingPage>
     return Scaffold(
       appBar: AppBar(title: Text(context.s.selling)),
       body: Padding(
-        padding: const EdgeInsets.all(MorphemeSizes.s16),
+        padding: const EdgeInsets.all(ConstantSizes.s16),
         child: Center(
           child: MorphemeButton.elevated(
             text: context.s.backWithResult,

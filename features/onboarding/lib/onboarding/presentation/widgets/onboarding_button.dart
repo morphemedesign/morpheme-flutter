@@ -22,7 +22,7 @@ class OnboardingButton extends StatelessWidget {
         isLast
             ? const SizedBox(width: 100)
             : MorphemeButton.text(
-                key: const ValueKey(MorphemeDataTesId.buttonSkip),
+                key: const ValueKey(ConstantDataTesId.buttonSkip),
                 isExpand: false,
                 text: context.s.skip,
                 style: TextButton.styleFrom(
@@ -32,7 +32,7 @@ class OnboardingButton extends StatelessWidget {
               ),
         Indicator(length: listOnboarding.length, selected: selected),
         MorphemeButton.elevated(
-          key: const ValueKey(MorphemeDataTesId.buttonNext),
+          key: const ValueKey(ConstantDataTesId.buttonNext),
           text: isLast ? context.s.started : context.s.next,
           isExpand: false,
           style: ElevatedButton.styleFrom(

@@ -7,6 +7,17 @@ class LoginResponse extends Equatable {
     required this.token,
   });
 
+  factory LoginResponse.fromMap(
+    Map<String, dynamic> map,
+  ) {
+    return LoginResponse(
+      token: map['token'],
+    );
+  }
+
+  factory LoginResponse.fromJson(String source) =>
+      LoginResponse.fromMap(json.decode(source));
+
   final String? token;
 
   Map<String, dynamic> toMap() {
@@ -15,16 +26,7 @@ class LoginResponse extends Equatable {
     };
   }
 
-  factory LoginResponse.fromMap(Map<String, dynamic> map) {
-    return LoginResponse(
-      token: map['token'],
-    );
-  }
-
   String toJson() => json.encode(toMap());
-
-  factory LoginResponse.fromJson(String source) =>
-      LoginResponse.fromMap(json.decode(source));
 
   @override
   List<Object?> get props => [

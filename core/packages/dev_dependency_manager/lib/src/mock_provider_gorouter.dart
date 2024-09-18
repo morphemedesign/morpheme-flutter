@@ -1,8 +1,7 @@
-import 'package:dependency_manager/dependency_manager.dart'
-    show GoRouter, InheritedGoRouter;
-import 'package:dependency_manager/dependency_manager_test.dart' show Mock;
 import 'package:flutter/material.dart'
     show StatelessWidget, Widget, BuildContext;
+import 'package:go_router/go_router.dart';
+import 'package:mocktail/mocktail.dart';
 
 class MockGoRouter extends Mock implements GoRouter {}
 
