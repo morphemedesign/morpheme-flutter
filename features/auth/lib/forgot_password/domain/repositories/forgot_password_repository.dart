@@ -7,5 +7,6 @@ abstract class ForgotPasswordRepository {
   Future<Either<MorphemeFailure, ForgotPasswordEntity>> forgotPassword(
     ForgotPasswordBody body, {
     Map<String, String>? headers,
+    CacheStrategy? cacheStrategy,
   });
 }

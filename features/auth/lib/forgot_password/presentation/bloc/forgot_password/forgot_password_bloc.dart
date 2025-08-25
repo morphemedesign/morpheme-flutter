@@ -9,20 +9,31 @@ part 'forgot_password_event.dart';
 part 'forgot_password_state.dart';
 
 class ForgotPasswordBloc
-    extends Bloc<ForgotPasswordEvent, ForgotPasswordState> {
+    extends MorphemeBloc<ForgotPasswordEvent, ForgotPasswordState> {
   ForgotPasswordBloc({
     required this.useCase,
   }) : super(ForgotPasswordInitial()) {
     on<FetchForgotPassword>((event, emit) async {
-      emit(ForgotPasswordLoading(
-        event.body,
-        event.headers,
-        event.extra,
-      ));
-      final result = await useCase(
-        event.body,
-        headers: event.headers,
+      emit(
+        ForgotPasswordLoading(
+          event.body,
+          event.headers,
+          event.extra,
+        ),
       );
+      _cancelableOperation = CancelableOperation.fromFuture(
+        useCase(
+          event.body,
+          headers: event.headers,
+          cacheStrategy: event.cacheStrategy,
+        ),
+      );
+      final result = await _cancelableOperation?.valueOrCancellation();
+
+      if (result == null) {
+        emit(ForgotPasswordCanceled(event.extra));
+        return;
+      }
       emit(
         result.fold(
           (failure) => ForgotPasswordFailed(
@@ -40,7 +51,22 @@ class ForgotPasswordBloc
         ),
       );
     });
+    on<CancelForgotPassword>((event, emit) async {
+      _cancelableOperation?.cancel();
+      _cancelableOperation = null;
+      emit(ForgotPasswordCanceled(event.extra));
+    });
   }
 
   final ForgotPasswordUseCase useCase;
+
+  CancelableOperation<Either<MorphemeFailure, ForgotPasswordEntity>>?
+      _cancelableOperation;
+
+  @override
+  Future<void> close() {
+    _cancelableOperation?.cancel();
+    _cancelableOperation = null;
+    return super.close();
+  }
 }

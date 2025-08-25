@@ -15,7 +15,12 @@ class LoginUseCase implements UseCase<LoginEntity, LoginBody> {
   Future<Either<MorphemeFailure, LoginEntity>> call(
     LoginBody body, {
     Map<String, String>? headers,
+    CacheStrategy? cacheStrategy,
   }) {
-    return repository.login(body, headers: headers);
+    return repository.login(
+      body,
+      headers: headers,
+      cacheStrategy: cacheStrategy,
+    );
   }
 }

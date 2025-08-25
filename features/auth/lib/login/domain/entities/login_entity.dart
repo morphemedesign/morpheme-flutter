@@ -2,10 +2,18 @@ import 'package:core/core.dart';
 
 class LoginEntity extends Equatable {
   const LoginEntity({
-    required this.token,
+    this.token,
   });
 
   final String? token;
+
+  LoginEntity copyWith({
+    String? token,
+  }) {
+    return LoginEntity(
+      token: token ?? this.token,
+    );
+  }
 
   @override
   List<Object?> get props => [

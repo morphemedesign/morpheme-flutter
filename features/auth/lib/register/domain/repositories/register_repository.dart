@@ -7,5 +7,6 @@ abstract class RegisterRepository {
   Future<Either<MorphemeFailure, RegisterEntity>> register(
     RegisterBody body, {
     Map<String, String>? headers,
+    CacheStrategy? cacheStrategy,
   });
 }

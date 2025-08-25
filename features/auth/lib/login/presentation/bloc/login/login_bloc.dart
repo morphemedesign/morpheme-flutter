@@ -8,20 +8,31 @@ import '../../../domain/usecases/login_use_case.dart';
 part 'login_event.dart';
 part 'login_state.dart';
 
-class LoginBloc extends Bloc<LoginEvent, LoginState> {
+class LoginBloc extends MorphemeBloc<LoginEvent, LoginState> {
   LoginBloc({
     required this.useCase,
   }) : super(LoginInitial()) {
     on<FetchLogin>((event, emit) async {
-      emit(LoginLoading(
-        event.body,
-        event.headers,
-        event.extra,
-      ));
-      final result = await useCase(
-        event.body,
-        headers: event.headers,
+      emit(
+        LoginLoading(
+          event.body,
+          event.headers,
+          event.extra,
+        ),
       );
+      _cancelableOperation = CancelableOperation.fromFuture(
+        useCase(
+          event.body,
+          headers: event.headers,
+          cacheStrategy: event.cacheStrategy,
+        ),
+      );
+      final result = await _cancelableOperation?.valueOrCancellation();
+
+      if (result == null) {
+        emit(LoginCanceled(event.extra));
+        return;
+      }
       emit(
         result.fold(
           (failure) => LoginFailed(
@@ -39,7 +50,22 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         ),
       );
     });
+    on<CancelLogin>((event, emit) async {
+      _cancelableOperation?.cancel();
+      _cancelableOperation = null;
+      emit(LoginCanceled(event.extra));
+    });
   }
 
   final LoginUseCase useCase;
+
+  CancelableOperation<Either<MorphemeFailure, LoginEntity>>?
+      _cancelableOperation;
+
+  @override
+  Future<void> close() {
+    _cancelableOperation?.cancel();
+    _cancelableOperation = null;
+    return super.close();
+  }
 }

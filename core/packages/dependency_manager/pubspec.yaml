@@ -5,31 +5,33 @@ version: 0.0.1
 publish_to: "none"
 
 environment:
-  sdk: ">=3.0.0 <4.0.0"
-  flutter: ">=3.10.0"
+  sdk: "^3.6.0"
+  flutter: "^3.27.0"
+resolution: workspace
 
 dependencies:
   flutter:
     sdk: flutter
 
   # Google Font
-  google_fonts: ^6.2.1
+  google_fonts: ^6.3.0
 
   # Navigation
-  go_router: ^14.2.7
+  go_router: ^14.8.1
 
   # Service Locator
-  get_it: ^7.7.0
+  get_it: ^8.2.0
 
   # Storage
-  flutter_secure_storage: ^9.2.2
+  flutter_secure_storage: ^9.2.4
 
   # Component
-  skeletonizer: ^1.4.2
+  skeletonizer: ^2.1.0
 
   # Utils
-  equatable: ^2.0.5
-  collection: ^1.18.0
+  async: ^2.13.0
+  equatable: ^2.0.7
+  collection: ^1.19.1
 
   # Firebase
   # firebase_core: ^2.25.4

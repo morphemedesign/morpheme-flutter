@@ -3,6 +3,19 @@
 light:
   brightness: light
   colors:
+    primary:
+      primary: "#28A0F6"
+      swatch:
+        900: "#0F43A9"
+        800: "#145ABF"
+        700: "#1A73D5"
+        600: "#218CEB"
+        500: "#28A0F6"
+        400: "#6AC8FB"
+        300: "#86D2FC"
+        200: "#A9DEFD"
+        100: "#CBEAFD"
+        50: "#E2FEF7"
     white: "#FFFFFF"
     black: "#1E1E1E"
     grey: "#979797"
@@ -10,7 +23,6 @@ light:
     grey2: "#E5E5E5"
     grey3: "#F5F5F5"
     grey4: "#F9F9F9"
-    primary: "#28A0F6"
     secondary: "#FDA06C"
     primaryLighter: "#00AFC1"
     warning: "#DAB320"
@@ -21,9 +33,23 @@ light:
     bgInfo: "#DFFCFF"
     bgSuccess: "#ECFFEE"
     bgWarning: "#FFF9E3"
+
 dark:
   brightness: dark
   colors:
+    primary:
+      primary: "#28A0F6"
+      swatch:
+        900: "#0F43A9"
+        800: "#145ABF"
+        700: "#1A73D5"
+        600: "#218CEB"
+        500: "#28A0F6"
+        400: "#6AC8FB"
+        300: "#86D2FC"
+        200: "#A9DEFD"
+        100: "#CBEAFD"
+        50: "#E2FEF7"
     white: "#1E1E1E"
     black: "#FFFFFF"
     grey: "#979797"
@@ -31,7 +57,6 @@ dark:
     grey2: "#F5F5F5"
     grey3: "#E5E5E5"
     grey4: "#CFCFCF"
-    primary: "#28A0F6"
     secondary: "#FDA06C"
     primaryLighter: "#00AFC1"
     warning: "#DAB320"

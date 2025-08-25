@@ -7,6 +7,7 @@ abstract class LoginRemoteDataSource {
   Future<LoginResponse> login(
     LoginBody body, {
     Map<String, String>? headers,
+    CacheStrategy? cacheStrategy,
   });
 }
 
@@ -19,12 +20,13 @@ class LoginRemoteDataSourceImpl implements LoginRemoteDataSource {
   Future<LoginResponse> login(
     LoginBody body, {
     Map<String, String>? headers,
+    CacheStrategy? cacheStrategy,
   }) async {
     final response = await http.post(
       MorphemeEndpoints.login,
       body: body.toMap(),
       headers: headers,
-      cacheStrategy: AsyncOrCacheStrategy(),
+      cacheStrategy: cacheStrategy ?? AsyncOrCacheStrategy(),
     );
     return LoginResponse.fromJson(response.body);
   }

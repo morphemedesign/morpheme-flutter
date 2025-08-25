@@ -1,5 +1,5 @@
+import 'package:dev_dependency_manager/dev_dependency_manager.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_test/flutter_test.dart';
 import 'package:morpheme_cucumber/morpheme_cucumber.dart';
 
 extension TypeStringExtension on String {

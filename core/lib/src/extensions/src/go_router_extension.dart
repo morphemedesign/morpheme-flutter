@@ -25,7 +25,7 @@ extension GoRouterOnBuildContextExtension on BuildContext {
 
   void goWithResult(
     String path, {
-   GoRouterCallbackReturn? onReturn,
+    GoRouterCallbackReturn? onReturn,
     Object? extra,
   }) {
     final goRouter = locator<GoRouter>();
@@ -38,7 +38,7 @@ extension GoRouterOnBuildContextExtension on BuildContext {
 
   Future<void> pushWithResult(
     String path, {
-   GoRouterCallbackReturn? onReturn,
+    GoRouterCallbackReturn? onReturn,
     Object? extra,
   }) async {
     final goRouter = locator<GoRouter>();

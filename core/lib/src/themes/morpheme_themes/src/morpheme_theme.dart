@@ -13,15 +13,16 @@ abstract base class MorphemeTheme {
   ThemeData get rawThemeData;
   ColorScheme get colorScheme;
 
-  TextTheme get _getTextTheme => GoogleFonts.robotoTextTheme()
-      .apply(bodyColor: color.black, displayColor: color.black)
-      .merge(MorphemeTextTheme.textTheme);
+  TextTheme get _getTextTheme =>
+      GoogleFonts.interTextTheme(MorphemeTextTheme.textTheme)
+          .apply(bodyColor: color.black, displayColor: color.black);
 
   ThemeData get themeData => rawThemeData.copyWith(
+        extensions: [color],
         scaffoldBackgroundColor: color.white,
         appBarTheme: AppBarTheme(
           elevation: 0,
-          color: color.white,
+          backgroundColor: color.white,
           foregroundColor: color.black,
           titleTextStyle: _getTextTheme.titleLarge,
         ),

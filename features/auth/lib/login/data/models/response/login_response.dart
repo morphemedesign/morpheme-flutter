@@ -4,7 +4,7 @@ import 'package:core/core.dart';
 
 class LoginResponse extends Equatable {
   const LoginResponse({
-    required this.token,
+    this.token,
   });
 
   factory LoginResponse.fromMap(

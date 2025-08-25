@@ -7,5 +7,6 @@ abstract class LoginRepository {
   Future<Either<MorphemeFailure, LoginEntity>> login(
     LoginBody body, {
     Map<String, String>? headers,
+    CacheStrategy? cacheStrategy,
   });
 }

@@ -16,7 +16,12 @@ class ForgotPasswordUseCase
   Future<Either<MorphemeFailure, ForgotPasswordEntity>> call(
     ForgotPasswordBody body, {
     Map<String, String>? headers,
+    CacheStrategy? cacheStrategy,
   }) {
-    return repository.forgotPassword(body, headers: headers);
+    return repository.forgotPassword(
+      body,
+      headers: headers,
+      cacheStrategy: cacheStrategy,
+    );
   }
 }

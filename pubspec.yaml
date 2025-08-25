@@ -6,7 +6,21 @@ publish_to: "none"
 version: 1.0.0+1
 
 environment:
-  sdk: ">=3.0.0 <4.0.0"
+  sdk: "^3.6.0"
+
+workspace:
+  - assets
+  - core
+  - core/packages/dependency_manager
+  - core/packages/morpheme_library
+  - core/packages/dev_dependency_manager
+  - features/splash
+  - features/onboarding
+  - features/auth
+  - features/home
+  - features/news
+  - features/profile
+  - features/selling
 
 dependencies:
   flutter:
@@ -34,9 +48,10 @@ dev_dependencies:
     path: ./core/packages/dev_dependency_manager
   integration_test:
     sdk: flutter
-  morpheme_cucumber: ^1.0.5
+  morpheme_cucumber: ^1.1.0
 
 flutter:
   uses-material-design: true
+  generate: true
   assets:
     - integration_test/ndjson/

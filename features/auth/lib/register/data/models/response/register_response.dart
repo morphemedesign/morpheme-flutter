@@ -4,8 +4,8 @@ import 'package:core/core.dart';
 
 class RegisterResponse extends Equatable {
   const RegisterResponse({
-    required this.id,
-    required this.token,
+    this.id,
+    this.token,
   });
 
   factory RegisterResponse.fromMap(

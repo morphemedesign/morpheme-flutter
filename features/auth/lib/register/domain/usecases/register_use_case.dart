@@ -15,7 +15,12 @@ class RegisterUseCase implements UseCase<RegisterEntity, RegisterBody> {
   Future<Either<MorphemeFailure, RegisterEntity>> call(
     RegisterBody body, {
     Map<String, String>? headers,
+    CacheStrategy? cacheStrategy,
   }) {
-    return repository.register(body, headers: headers);
+    return repository.register(
+      body,
+      headers: headers,
+      cacheStrategy: cacheStrategy,
+    );
   }
 }

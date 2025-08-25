@@ -2,8 +2,8 @@ import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 
-class MorphemeSliverListSeparated extends StatelessWidget {
-  const MorphemeSliverListSeparated({
+class SliverListSeparated extends StatelessWidget {
+  const SliverListSeparated({
     super.key,
     required this.itemCount,
     required this.itemBuilder,

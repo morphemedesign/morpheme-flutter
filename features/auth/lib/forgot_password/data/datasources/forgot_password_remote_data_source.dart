@@ -7,6 +7,7 @@ abstract class ForgotPasswordRemoteDataSource {
   Future<ForgotPasswordResponse> forgotPassword(
     ForgotPasswordBody body, {
     Map<String, String>? headers,
+    CacheStrategy? cacheStrategy,
   });
 }
 
@@ -20,15 +21,17 @@ class ForgotPasswordRemoteDataSourceImpl
   Future<ForgotPasswordResponse> forgotPassword(
     ForgotPasswordBody body, {
     Map<String, String>? headers,
+    CacheStrategy? cacheStrategy,
   }) async {
     final response = await http.get(
       MorphemeEndpoints.forgotPassword,
       body: body.toMap(),
       headers: headers,
-      cacheStrategy: JustCacheStrategy(
-        ttlValue: const Duration(minutes: 120),
-        keepExpiredCache: true,
-      ),
+      cacheStrategy: cacheStrategy ??
+          JustCacheStrategy(
+            ttlValue: const Duration(minutes: 120),
+            keepExpiredCache: true,
+          ),
     );
     return ForgotPasswordResponse.fromJson(response.body);
   }

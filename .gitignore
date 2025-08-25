@@ -44,12 +44,15 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
+/android/app/.cxx
 
 coverage/
 test/coverage_helper_test.dart
+**/bundle_test.dart
 morpheme.yaml
 **/pubspec_overrides.yaml
 .symbols
+tests.output
 
 # You definitely want these
 **/ios/*.ipa
@@ -72,3 +75,17 @@ integration_test/test_bundle.dart
 **/google-services.json
 **/GoogleService-Info.plist
 **/firebase_app_id_file.json
+firebase.json
+
+# Script manual build and deploy
+manual.sh
+
+# Repository
+integration_test
+
+# Service Account
+/service_account/
+firebase_command.sh
+
+# Log
+morpheme_log.txt

@@ -1,6 +1,3 @@
-
-
-
 abstract final class ConstantRoutes {
   static const String splash = '/';
   static const String onboarding = 'onboarding';

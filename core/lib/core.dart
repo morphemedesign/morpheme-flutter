@@ -1,5 +1,3 @@
-library core;
-
 export 'package:assets/assets.dart';
 export 'package:dependency_manager/dependency_manager.dart';
 export 'package:intl/date_symbol_data_local.dart';

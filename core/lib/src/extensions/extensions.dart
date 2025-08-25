@@ -1,5 +1,3 @@
-library extensions;
-
 export 'src/date_time_extension.dart';
 export 'src/go_router_extension.dart';
 export 'src/localization_extension.dart';

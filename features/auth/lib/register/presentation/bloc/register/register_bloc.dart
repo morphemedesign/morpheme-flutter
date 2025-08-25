@@ -8,20 +8,31 @@ import '../../../domain/usecases/register_use_case.dart';
 part 'register_event.dart';
 part 'register_state.dart';
 
-class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
+class RegisterBloc extends MorphemeBloc<RegisterEvent, RegisterState> {
   RegisterBloc({
     required this.useCase,
   }) : super(RegisterInitial()) {
     on<FetchRegister>((event, emit) async {
-      emit(RegisterLoading(
-        event.body,
-        event.headers,
-        event.extra,
-      ));
-      final result = await useCase(
-        event.body,
-        headers: event.headers,
+      emit(
+        RegisterLoading(
+          event.body,
+          event.headers,
+          event.extra,
+        ),
       );
+      _cancelableOperation = CancelableOperation.fromFuture(
+        useCase(
+          event.body,
+          headers: event.headers,
+          cacheStrategy: event.cacheStrategy,
+        ),
+      );
+      final result = await _cancelableOperation?.valueOrCancellation();
+
+      if (result == null) {
+        emit(RegisterCanceled(event.extra));
+        return;
+      }
       emit(
         result.fold(
           (failure) => RegisterFailed(
@@ -39,7 +50,22 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
         ),
       );
     });
+    on<CancelRegister>((event, emit) async {
+      _cancelableOperation?.cancel();
+      _cancelableOperation = null;
+      emit(RegisterCanceled(event.extra));
+    });
   }
 
   final RegisterUseCase useCase;
+
+  CancelableOperation<Either<MorphemeFailure, RegisterEntity>>?
+      _cancelableOperation;
+
+  @override
+  Future<void> close() {
+    _cancelableOperation?.cancel();
+    _cancelableOperation = null;
+    return super.close();
+  }
 }

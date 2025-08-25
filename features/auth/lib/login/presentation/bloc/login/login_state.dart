@@ -6,17 +6,20 @@ abstract class LoginState extends Equatable {
   bool get isLoading => this is LoginLoading;
   bool get isFailed => this is LoginFailed;
   bool get isSuccess => this is LoginSuccess;
+  bool get isCanceled => this is LoginCanceled;
 
   bool get isNotInitial => this is! LoginInitial;
   bool get isNotLoading => this is! LoginLoading;
   bool get isNotFailed => this is! LoginFailed;
   bool get isNotSuccess => this is! LoginSuccess;
+  bool get isNotCanceled => this is! LoginCanceled;
 
   void when({
     void Function(LoginInitial state)? onInitial,
     void Function(LoginLoading state)? onLoading,
     void Function(LoginFailed state)? onFailed,
     void Function(LoginSuccess state)? onSuccess,
+    void Function(LoginCanceled state)? onCanceled,
   }) {
     final state = this;
     if (state is LoginInitial) {
@@ -27,6 +30,8 @@ abstract class LoginState extends Equatable {
       onFailed?.call(state);
     } else if (state is LoginSuccess) {
       onSuccess?.call(state);
+    } else if (state is LoginCanceled) {
+      onCanceled?.call(state);
     }
   }
 
@@ -35,6 +40,7 @@ abstract class LoginState extends Equatable {
     Widget Function(LoginLoading state)? onLoading,
     Widget Function(LoginFailed state)? onFailed,
     Widget Function(LoginSuccess state)? onSuccess,
+    Widget Function(LoginCanceled state)? onCanceled,
     Widget Function(LoginState state)? onStateBuilder,
   }) {
     final state = this;
@@ -48,6 +54,8 @@ abstract class LoginState extends Equatable {
       return onFailed?.call(state) ?? defaultWidget;
     } else if (state is LoginSuccess) {
       return onSuccess?.call(state) ?? defaultWidget;
+    } else if (state is LoginCanceled) {
+      return onCanceled?.call(state) ?? defaultWidget;
     } else {
       return defaultWidget;
     }
@@ -78,28 +86,6 @@ class LoginLoading extends LoginState {
       ];
 }
 
-class LoginSuccess extends LoginState {
-  LoginSuccess(
-    this.body,
-    this.headers,
-    this.data,
-    this.extra,
-  );
-
-  final LoginBody body;
-  final Map<String, String>? headers;
-  final LoginEntity data;
-  final dynamic extra;
-
-  @override
-  List<Object?> get props => [
-        body,
-        headers,
-        data,
-        extra,
-      ];
-}
-
 class LoginFailed extends LoginState {
   LoginFailed(
     this.body,
@@ -118,6 +104,37 @@ class LoginFailed extends LoginState {
         body,
         headers,
         failure,
+        extra,
+      ];
+}
+
+class LoginCanceled extends LoginState {
+  LoginCanceled(this.extra);
+
+  final dynamic extra;
+
+  @override
+  List<Object?> get props => [extra];
+}
+
+class LoginSuccess extends LoginState {
+  LoginSuccess(
+    this.body,
+    this.headers,
+    this.data,
+    this.extra,
+  );
+
+  final LoginBody body;
+  final Map<String, String>? headers;
+  final LoginEntity data;
+  final dynamic extra;
+
+  @override
+  List<Object?> get props => [
+        body,
+        headers,
+        data,
         extra,
       ];
 }

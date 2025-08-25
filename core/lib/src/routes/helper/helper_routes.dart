@@ -1,6 +1,5 @@
 import 'package:core/src/global_variable.dart';
-import 'package:dependency_manager/dependency_manager.dart'
-    show GoRouter;
+import 'package:dependency_manager/dependency_manager.dart' show GoRouter;
 
 String joinRoutes(List<String> paths) {
   if (paths.isEmpty) {

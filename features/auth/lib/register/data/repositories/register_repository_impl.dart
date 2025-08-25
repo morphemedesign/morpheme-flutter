@@ -1,10 +1,10 @@
 import 'package:core/core.dart';
 
 import '../../domain/entities/register_entity.dart';
+import '../../mapper.dart';
 import '../../domain/repositories/register_repository.dart';
 import '../datasources/register_remote_data_source.dart';
 import '../models/body/register_body.dart';
-import '../../mapper.dart';
 
 class RegisterRepositoryImpl implements RegisterRepository {
   RegisterRepositoryImpl({
@@ -17,11 +17,13 @@ class RegisterRepositoryImpl implements RegisterRepository {
   Future<Either<MorphemeFailure, RegisterEntity>> register(
     RegisterBody body, {
     Map<String, String>? headers,
+    CacheStrategy? cacheStrategy,
   }) async {
     try {
       final data = await remoteDataSource.register(
         body,
         headers: headers,
+        cacheStrategy: cacheStrategy,
       );
       return Right(data.toEntity());
     } on MorphemeException catch (e) {

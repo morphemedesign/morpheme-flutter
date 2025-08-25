@@ -1,5 +1,4 @@
-library dependency_manager;
-
+export 'package:async/async.dart';
 export 'package:collection/collection.dart';
 export 'package:equatable/equatable.dart';
 // export 'package:firebase_analytics/firebase_analytics.dart';
